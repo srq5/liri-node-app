@@ -8,7 +8,7 @@ var request = require("request");
 var fs = require("fs");
 var keys = require("./keys.js");
 var Spotify = require("node-spotify-api");
-var twitter = require("twitter");
+var Twitter = require("twitter");
 
 var commandString = process.argv[2];
 var argTwo = process.argv[3];
@@ -19,14 +19,22 @@ var argSix = process.argv[7];
 var argSeven = process.argv[8];
 
 var spotify = new Spotify({
-    id: 'bdda8968c4054ebca24067fb92ac5e88',
-    secret: '7795bf0b75bc4612ba9ac9e7d2ea5c36'
+    id: keys.spotify_keys.client_id,
+    secret: keys.spotify_keys.client_secret
+});
+
+var twitter = new Twitter({
+    consumer_key: keys.twitter_keys.consumer_key,
+    consumer_secret: keys.twitter_keys.consumer_secret,
+    access_token_key: keys.twitter_keys.access_token_key,
+    access_token_secret: keys.twitter_keys.access_token_secret,
 });
 
 if (commandString === "movie-this") {
 
     //If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-   
+    // This is only taking one argument.
+
     request("http://www.omdbapi.com/?t=" + argTwo + "&apikey=trilogy", function (err, res, body) {
 
         console.log("TITLE: " + JSON.parse(body).Title);
@@ -39,18 +47,28 @@ if (commandString === "movie-this") {
         console.log("ACTORS: " + JSON.parse(body).Actors);
 
     });
+    // Drill down into the object. 
+} else if (commandString === "spotify-this-song") {
 
-} 
+    spotify.search({ type: 'track', query: argTwo }, function (err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
 
-//else if (commandString === "spotify-this-song") {
+        console.log(data);
+    });
 
- //   spotify
- //       .request("https://api.spotify.com/v1/search?q=heaven's+on+fire&type=track&market=US&limit=1" - H "Accept: application/json" - H "Authorization: Bearer BQCb3ZNKVVLopzOsC04FfFz9UqzNfDt_kzQLpdpF-qtKO4OCtP8h5Y0ExpMtjriJcPkCVmoz9w8Jf03Rp5u9I1SRBwDgCzUligagW-2LSVHyIm_D5r1Bi9DXcQu_pIJKpjQGOwt4ebinYG2S")
- //       .then(function (data) {
- //           console.log(data);
-  //      })
-  //      .catch(function (err) {
-  //          console.error('Error occurred: ' + err);
-  //      });
+} else if (commandString === "my-tweets") {
 
-//}
+    var params = { screen_name: 'ErQ7d' };
+    twitter.get('statuses/user_timeline', params, function (error, tweets, response) {
+        if (!error) {
+            console.log(tweets);
+        }
+    });
+
+} else if (commandString === "do-what-it-says") {
+
+} else {
+    console.log("That is not a command.")
+}

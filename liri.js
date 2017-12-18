@@ -1,9 +1,3 @@
-//1. OMDB function
-//2. Spotify function
-//3. Twitter function
-//4. Do what it says function
-//5. Switch statemtent, call functions.
-
 var request = require("request");
 var fs = require("fs");
 var keys = require("./keys.js");
@@ -27,10 +21,11 @@ var twitter = new Twitter({
     consumer_key: keys.twitter_keys.consumer_key,
     consumer_secret: keys.twitter_keys.consumer_secret,
     access_token_key: keys.twitter_keys.access_token_key,
-    access_token_secret: keys.twitter_keys.access_token_secret,
+    access_token_secret: keys.twitter_keys.access_token_secret
 });
 
 function doWhatItSays() {
+
     fs.readFile("random.txt", "utf8", function (error, data) {
 
         if (error) {
@@ -38,7 +33,7 @@ function doWhatItSays() {
         }
 
         var dataArray = data.split(",");
-        //console.log(dataArray);
+
         console.log(dataArray[0]);
         console.log(dataArray[1]);
 
@@ -50,8 +45,7 @@ function doWhatItSays() {
 
 }
 
-if (commandString === "movie-this") {
-
+function movieThis() {
     //If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
     // This is only taking one argument.
 
@@ -66,24 +60,24 @@ if (commandString === "movie-this") {
         console.log("PLOT: " + JSON.parse(body).Plot);
         console.log("ACTORS: " + JSON.parse(body).Actors);
 
-        //Will use this to append data to log.txt
-
-        fs.appendFile('./log.txt', "Hello Kitty", function (err) {
+        fs.appendFile('./log.txt', body, function (err) {
 
             if (err) {
                 console.log(err);
             }
 
             else {
-                console.log("Content Added!");
+                console.log("CONTENT ADDED.");
             }
 
         });
 
     });
-    // Drill down into the object. 
-} else if (commandString === "spotify-this-song") {
 
+}
+
+function spotifyThisSong() {
+    // Drill down into the object. 
     spotify.search({ type: 'track', query: argTwo }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
@@ -91,20 +85,63 @@ if (commandString === "movie-this") {
 
         console.log(data);
     });
-// Get just the tweet text.
-} else if (commandString === "my-tweets") {
 
+    fs.appendFile('./log.txt', data, function (err) {
+
+        if (err) {
+            console.log(err);
+        }
+
+        else {
+            console.log("Content Added!");
+        }
+
+    });
+
+}
+
+function myTweets() {
+    // Get just the tweet text.
     var params = { screen_name: 'ErQ7d' };
+    
     twitter.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             console.log(tweets);
         }
     });
 
+    fs.appendFile('./log.txt', tweets, function (err) {
+
+        if (err) {
+            console.log(err);
+        }
+
+        else {
+            console.log("Content Added!");
+        }
+
+    });
+}
+
+//Is there a more elegant way to assign my command arguments?
+if (commandString === "movie-this") {
+
+    movieThis();
+
+} else if (commandString === "spotify-this-song") {
+
+    spotifyThisSong();
+
+} else if (commandString === "my-tweets") {
+
+    myTweets();
+
 } else if (commandString === "do-what-it-says") {
 
-doWhatItSays();
+    doWhatItSays();
 
 } else {
-    console.log("That is not a command.")
+
+    console.log("That is not a command.");
+
 }

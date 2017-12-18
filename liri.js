@@ -44,6 +44,7 @@ function doWhatItSays() {
     });
 
 }
+//
 
 function movieThis() {
     //If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'

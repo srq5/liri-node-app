@@ -30,6 +30,26 @@ var twitter = new Twitter({
     access_token_secret: keys.twitter_keys.access_token_secret,
 });
 
+function doWhatItSays() {
+    fs.readFile("random.txt", "utf8", function (error, data) {
+
+        if (error) {
+            return console.log(error);
+        }
+
+        var dataArray = data.split(",");
+        //console.log(dataArray);
+        console.log(dataArray[0]);
+        console.log(dataArray[1]);
+
+        // Here, I want to turn the items of the array into arguments. 
+        commandString = dataArray[0];
+        argTwo = dataArray[1];
+
+    });
+
+}
+
 if (commandString === "movie-this") {
 
     //If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
@@ -46,6 +66,20 @@ if (commandString === "movie-this") {
         console.log("PLOT: " + JSON.parse(body).Plot);
         console.log("ACTORS: " + JSON.parse(body).Actors);
 
+        //Will use this to append data to log.txt
+
+        fs.appendFile('./log.txt', "Hello Kitty", function (err) {
+
+            if (err) {
+                console.log(err);
+            }
+
+            else {
+                console.log("Content Added!");
+            }
+
+        });
+
     });
     // Drill down into the object. 
 } else if (commandString === "spotify-this-song") {
@@ -57,7 +91,7 @@ if (commandString === "movie-this") {
 
         console.log(data);
     });
-
+// Get just the tweet text.
 } else if (commandString === "my-tweets") {
 
     var params = { screen_name: 'ErQ7d' };
@@ -68,6 +102,8 @@ if (commandString === "movie-this") {
     });
 
 } else if (commandString === "do-what-it-says") {
+
+doWhatItSays();
 
 } else {
     console.log("That is not a command.")

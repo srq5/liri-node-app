@@ -14,9 +14,9 @@ Use L.I.R.I. in the command line. You can give L.I.R.I. the following four comma
 
 1. my-tweets
 	* This will give you my latest 20 tweets.
-2. movie-this
+2. movie-this + <your movie argument>
 	* This command will search the OMDB API for information about the movie argument you have entered. 
-3. spotify-this-song
+3. spotify-this-song + <your track argument>
 	* This will give you information about the 
 4. do-what-it-says
 	* This will run the text in a .txt file as a command. This command uses the "fs" package.

@@ -39,7 +39,6 @@ function doWhatItSays() {
     });
 
 }
-//
 
 function movieThis() {
     //If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
@@ -104,7 +103,7 @@ function spotifyThisSong() {
 }
 
 function myTweets() {
-    // I just need the tweet text.
+    // I want just the tweet text, not the whole obj.
     var params = { screen_name: 'ErQ7d' };
     
     twitter.get('statuses/user_timeline', params, function (error, tweets, response) {

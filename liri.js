@@ -6,11 +6,6 @@ var Twitter = require("twitter");
 
 var commandString = process.argv[2];
 var argTwo = process.argv[3];
-var argThree = process.argv[4];
-var argFour = process.argv[5];
-var argFive = process.argv[6];
-var argSix = process.argv[7];
-var argSeven = process.argv[8];
 
 var spotify = new Spotify({
     id: keys.spotify_keys.client_id,
@@ -48,8 +43,7 @@ function doWhatItSays() {
 
 function movieThis() {
     //If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-    // This is only taking one argument.
-
+    
     request("http://www.omdbapi.com/?t=" + argTwo + "&apikey=trilogy", function (err, res, body) {
 
         console.log("TITLE: " + JSON.parse(body).Title);
@@ -61,6 +55,7 @@ function movieThis() {
         console.log("PLOT: " + JSON.parse(body).Plot);
         console.log("ACTORS: " + JSON.parse(body).Actors);
 
+        //Only the keys we have specified should be appended, not the whole body object.
         fs.appendFile('./log.txt', body, function (err) {
 
             if (err) {
@@ -68,7 +63,7 @@ function movieThis() {
             }
 
             else {
-                console.log("CONTENT ADDED.");
+                console.log("\nContent added to log.");
             }
 
         });
@@ -84,7 +79,24 @@ function spotifyThisSong() {
             return console.log('Error occurred: ' + err);
         }
 
-        console.log(data);
+        console.log("ARTIST: " + data.tracks.items[0].artists[0].name);
+        console.log("TRACK: " + data.tracks.items[0].name);
+        console.log("ALBUM: " + data.tracks.items[0].album.name);
+        console.log("PREVIEW URL: " + data.tracks.items[0].preview_url);
+        
+        //If no song is provided then your program will default to "The Sign" by Ace of Base.
+
+        fs.appendFile('./log.txt', data, function (err) {
+            
+                        if (err) {
+                            console.log(err);
+                        }
+            
+                        else {
+                            console.log("\nContent added to log.");
+                        }
+            
+                    });
     });
 
  
@@ -92,18 +104,19 @@ function spotifyThisSong() {
 }
 
 function myTweets() {
-    // Get just the tweet text.
+    // I just need the tweet text.
     var params = { screen_name: 'ErQ7d' };
     
     twitter.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             console.log(tweets);
+            
         }
     });
 
 }
 
-//Is there a more elegant way to assign my command arguments?
+// ### Is there a more elegant way to assign my command arguments?
 if (commandString === "movie-this") {
 
     movieThis();

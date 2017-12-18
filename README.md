@@ -21,3 +21,4 @@ Use L.I.R.I. in the command line. You can give L.I.R.I. the following four comma
 4. do-what-it-says
 	* This will run the text in a .txt file as a command. This command uses the "fs" package.
 
+5. NOTE: If you're argument contains spaces, wrap it in quotation marks.

@@ -86,17 +86,7 @@ function spotifyThisSong() {
         console.log(data);
     });
 
-    fs.appendFile('./log.txt', data, function (err) {
-
-        if (err) {
-            console.log(err);
-        }
-
-        else {
-            console.log("Content Added!");
-        }
-
-    });
+ 
 
 }
 
@@ -110,17 +100,6 @@ function myTweets() {
         }
     });
 
-    fs.appendFile('./log.txt', tweets, function (err) {
-
-        if (err) {
-            console.log(err);
-        }
-
-        else {
-            console.log("Content Added!");
-        }
-
-    });
 }
 
 //Is there a more elegant way to assign my command arguments?

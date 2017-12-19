@@ -13,12 +13,12 @@ This app was created as an assignment for the Georgia Tech Coding Bootcamp in or
 Use L.I.R.I. in the command line. You can give L.I.R.I. the following four commands:
 
 1. my-tweets
-	* This will give you my latest 20 tweets.
+	* This will give you my latest 20 tweets and when they were created.
 2. movie-this + "your movie argument"
-	* This command will search the OMDB API for information about the movie argument you have entered. 
+	* This command will query the OMDB API for information about the movie argument you have entered. 
 3. spotify-this-song + "your track argument"
-	* This will give you information about the 
+	* This command will query the Spotify API for information about the song argument you have entered.
 4. do-what-it-says
-	* This will run the text in a .txt file as a command. This command uses the "fs" package.
+	* This will run the text in a .txt file as a command.
 
 5. NOTE: If your argument contains spaces, wrap it in quotation marks.

@@ -1,3 +1,8 @@
+//### BUGS TO FIX:
+//1. Provide a default song/movie when no argument is passed in.
+//2. Parse the my tweets object to show only the text. Also, use the "count" parameter for the Twitter API endpoint I have use to get 20 tweets. 
+//3. Have the strings that are read from "random.txt" be passed in as arguments.
+
 var request = require("request");
 var fs = require("fs");
 var keys = require("./keys.js");
@@ -41,20 +46,18 @@ function doWhatItSays() {
 }
 
 function movieThis() {
-    //If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-    
+
     request("http://www.omdbapi.com/?t=" + argTwo + "&apikey=trilogy", function (err, res, body) {
 
         console.log("TITLE: " + JSON.parse(body).Title);
         console.log("YEAR: " + JSON.parse(body).Year);
-        //console.log("IMDB: " + JSON.parse(body).Ratings[0].Value);
-        //console.log("RT: " + JSON.parse(body).Ratings[1].Value);
+        console.log("IMDB: " + JSON.parse(body).Ratings[0].Value);
+        console.log("RT: " + JSON.parse(body).Ratings[1].Value);
         console.log("COUNTRY: " + JSON.parse(body).Country);
         console.log("LANG: " + JSON.parse(body).Language);
         console.log("PLOT: " + JSON.parse(body).Plot);
         console.log("ACTORS: " + JSON.parse(body).Actors);
 
-        //Only the keys we have specified should be appended, not the whole body object.
         fs.appendFile('./log.txt', body, function (err) {
 
             if (err) {
@@ -72,44 +75,46 @@ function movieThis() {
 }
 
 function spotifyThisSong() {
-    // Drill down into the object. 
+
     spotify.search({ type: 'track', query: argTwo }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
 
-        console.log("ARTIST: " + data.tracks.items[0].artists[0].name);
-        console.log("TRACK: " + data.tracks.items[0].name);
-        console.log("ALBUM: " + data.tracks.items[0].album.name);
-        console.log("PREVIEW URL: " + data.tracks.items[0].preview_url);
-        
-        //If no song is provided then your program will default to "The Sign" by Ace of Base.
+        var artistName = "ARTIST: " + data.tracks.items[0].artists[0].name;
+        var trackName = "TRACK: " + data.tracks.items[0].name;
+        var albumName = "ALBUM: " + data.tracks.items[0].album.name;
+        var previewUrl = "PREVIEW URL: " + data.tracks.items[0].preview_url;
 
-        fs.appendFile('./log.txt', data, function (err) {
-            
-                        if (err) {
-                            console.log(err);
-                        }
-            
-                        else {
-                            console.log("\nContent added to log.");
-                        }
-            
-                    });
+        console.log(trackName);
+        console.log(artistName);
+        console.log(albumName);
+        console.log(previewUrl);
+
+        fs.appendFile('./log.txt', trackName, function (err) {
+
+            if (err) {
+                console.log(err);
+            }
+
+            else {
+                console.log("\nContent added to log.");
+            }
+
+        });
     });
-
- 
 
 }
 
 function myTweets() {
+    // Latest 20 tweets and when they were created.
     // I want just the tweet text, not the whole obj.
-    var params = { screen_name: 'ErQ7d' };
-    
-    twitter.get('statuses/user_timeline', params, function (error, tweets, response) {
+    var parameters = { screen_name: 'ErQ7d', count: '20' };
+
+    twitter.get('statuses/user_timeline', parameters, function (error, tweets, response) {
         if (!error) {
             console.log(tweets);
-            
+
         }
     });
 
